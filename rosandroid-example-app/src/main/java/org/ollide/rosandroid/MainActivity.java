@@ -17,15 +17,21 @@
 package org.ollide.rosandroid;
 
 import android.app.ActionBar;
+
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+
 import android.support.v7.app.AppCompatCallback;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import org.ros.RosCore;
@@ -81,6 +87,42 @@ public class MainActivity extends RosActivity implements AppCompatCallback {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.menu_settings) toast("Settings");
+        if(id == R.id.menu_snap_joystick){
+            if (item.isChecked()) {
+                joystick.DisableSnapping();
+                item.setChecked(false);
+            }
+            else {
+                joystick.EnableSnapping();
+                item.setChecked(true);
+            }
+        }
+        if(id == R.id.menu_change_topic){
+
+            final EditText txtUrl = new EditText(this);
+
+// Set the default text to a link of the Queen
+            txtUrl.setHint("Enter topic");
+
+            new AlertDialog.Builder(this)
+                    .setTitle("Change Topic Name")
+                    .setMessage("Change the topic that the cmd_vel messages are publishing to")
+                    .setView(txtUrl)
+                    .setPositiveButton("Go!", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            topic = txtUrl.getText().toString();
+                            //init(nm);
+
+
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                        }
+                    })
+                    .show();
+
+        }
         return true;
     }
     public void toast(String text){
@@ -91,14 +133,18 @@ public class MainActivity extends RosActivity implements AppCompatCallback {
         toast.show();
         toast = null;
     }
+
+    String topic = "";
+    NodeMainExecutor nm;
     @Override
     protected void init(NodeMainExecutor nodeMainExecutor) {
+        nm = nodeMainExecutor;
         NodeMain node = new SimplePublisherNode();
 
         NodeConfiguration nodeConfiguration = NodeConfiguration.newPublic(InetAddressFactory.newNonLoopback().getHostAddress());
         nodeConfiguration.setMasterUri(getMasterUri());
 
         nodeMainExecutor.execute(node, nodeConfiguration);
-        nodeMainExecutor.execute(joystick, nodeConfiguration.setNodeName("virtual_joystick"));
+        nodeMainExecutor.execute(joystick, nodeConfiguration.setNodeName(topic));
     }
 }

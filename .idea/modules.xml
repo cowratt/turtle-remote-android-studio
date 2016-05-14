@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/android_studio.iml" filepath="$PROJECT_DIR$/android_studio.iml" />
       <module fileurl="file://$PROJECT_DIR$/rosandroid-example-app/rosandroid-example-app.iml" filepath="$PROJECT_DIR$/rosandroid-example-app/rosandroid-example-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/turtle-remote-android-studio.iml" filepath="$PROJECT_DIR$/turtle-remote-android-studio.iml" />
     </modules>
   </component>
 </project>

@@ -4,7 +4,16 @@
     tools:context=".MainActivity"
     >
     <item
-        android:id="@+id/menu_settings"
+        android:id="@+id/menu_change_topic"
         android:orderInCategory="1"
+        android:title="Change topic"></item>
+    <item
+        android:id="@+id/menu_snap_joystick"
+        android:orderInCategory="2"
+        android:title="Joystick Snap"
+        android:checkable="true"></item>
+    <item
+        android:id="@+id/menu_settings"
+        android:orderInCategory="3"
         android:title="settings"></item>
 </menu>
